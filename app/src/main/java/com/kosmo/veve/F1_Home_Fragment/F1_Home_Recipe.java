@@ -17,6 +17,6 @@ public class F1_Home_Recipe extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_f1__home__recipe,null,false);
+        return inflater.inflate(R.layout.fragment_home__recipe,null,false);
     }
 }

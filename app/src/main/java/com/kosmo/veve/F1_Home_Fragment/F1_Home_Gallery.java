@@ -17,6 +17,6 @@ public class F1_Home_Gallery extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_f1__home__gallery,null,false);
+        return inflater.inflate(R.layout.fragment_home__gallery,null,false);
     }
 }

@@ -73,7 +73,7 @@
 
         <EditText
             android:id="@+id/edt_content"
-            android:layout_width="381dp"
+            android:layout_width="370dp"
             android:layout_height="137dp"
             android:background="@drawable/login_edittext"
             android:gravity="top|left"

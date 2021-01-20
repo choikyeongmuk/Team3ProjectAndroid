@@ -12,6 +12,7 @@
         android:padding="10dp">
 
         <EditText
+            android:id="@+id/edt_search"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
@@ -20,6 +21,7 @@
             />
 
         <Button
+            android:id="@+id/btn_search"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
@@ -63,11 +65,17 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map_view"
-        />
+        />-->
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>

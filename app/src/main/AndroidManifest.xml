@@ -9,7 +9,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 현재 위치 관련-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".http.GlobalApplication"
@@ -25,6 +27,9 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDE-mfMElhoOj23BszbfdDhmZEPEgUhIE4" />
 
         <activity android:name=".MyPage_Edit_Profile" />
         <activity android:name=".MainPage" />

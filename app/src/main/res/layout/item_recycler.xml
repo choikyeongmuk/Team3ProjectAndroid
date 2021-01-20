@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
         app:cardUseCompatPadding="true"
         app:cardElevation="8dp"
         android:layout_height="wrap_content"
@@ -14,32 +14,113 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:padding="16dp"
-        android:id="@+id/user_id"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/bbs_file"
-        android:src="@drawable/ic_book"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/user_id"/>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/bbs_title"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="20dp"
+                android:src="@drawable/more"/>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/bbs_content"/>
+        </RelativeLayout>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/bbs_postdate"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#B1AFAF"/>
+
+        <ImageView
+            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:id="@+id/bbs_file"
+            android:src="@drawable/ic_book"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#B1AFAF"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_heart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:src="@drawable/comment"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:src="@drawable/no_scrap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView14"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="좋아요 1개"
+            android:paddingLeft="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/bbs_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:id="@+id/bbs_content"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:id="@+id/bbs_postdate"/>
 
 </LinearLayout>
 

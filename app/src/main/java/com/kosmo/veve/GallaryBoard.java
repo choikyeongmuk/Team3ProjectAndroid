@@ -1,5 +1,6 @@
 package com.kosmo.veve;
 
+
 public class GallaryBoard {
     private String gallary_no;
     private String title;
@@ -14,17 +15,6 @@ public class GallaryBoard {
     private String f_name;
     private String fileOne;
 
-    public GallaryBoard(){
-
-    }
-
-    public GallaryBoard(String userID, String user_file, String title, String user_content, String postdate) {
-        this.userID = userID;
-        this.f_path = user_file;
-        this.title = title;
-        this.content = user_content;
-        this.postDate = postdate;
-    }
 
 
     public String getGallary_no() {
@@ -90,6 +80,7 @@ public class GallaryBoard {
     public void setCommentCount(String commentCount) {
         this.commentCount = commentCount;
     }
+
 
     public String getGallary_file_no() {
         return gallary_file_no;
