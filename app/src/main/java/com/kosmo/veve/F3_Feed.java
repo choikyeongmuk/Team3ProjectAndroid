@@ -32,6 +32,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -163,6 +165,11 @@ public class F3_Feed extends Fragment {
 
     private void sendImageToServer(File file){
         try{
+
+            /*SimpleDateFormat format = new SimpleDateFormat( "yyyy년 MM월dd일");
+            Date date = new Date();
+            String postDate = format.format(date);*/
+
             //요청바디 설정
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -170,6 +177,7 @@ public class F3_Feed extends Fragment {
                     .addFormDataPart("userID", "test12")
                     .addFormDataPart("title", edt_title.getText().toString())
                     .addFormDataPart("content", edt_content.getText().toString())
+                    //.addFormDataPart("postdate",postDate)
                     .addFormDataPart("upload", file.getName(), RequestBody.create(MediaType.parse("image/jpg"), file))
                     .build();
             //요청 객체 생성

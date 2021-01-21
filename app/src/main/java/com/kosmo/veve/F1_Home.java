@@ -34,6 +34,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class F1_Home extends Fragment implements Runnable {
     private List<String> content = new ArrayList<>();
     private List<String> postdate = new ArrayList<>();
 
-
+    int check=0;
 
     private View view;
 
@@ -74,17 +76,23 @@ public class F1_Home extends Fragment implements Runnable {
     @Override
     public void onStart() {
         super.onStart();
+        if(check == 0){
 
+            Thread thread = new Thread(this);
+            thread.start();
 
-        user_file = getView().findViewById(R.id.bbs_file);
+            recyclerView = getView().findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            initAdapter();
+            check++;
+        }else{
+            user_file = getView().findViewById(R.id.bbs_file);
 
-        Thread thread = new Thread(this);
-        thread.start();
+            recyclerView = getView().findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerView = getView().findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        initAdapter();
-
+            initAdapter();
+        }
 
     }
 
@@ -223,7 +231,10 @@ public class F1_Home extends Fragment implements Runnable {
                 gb.setF_name(row.getString("f_name"));
                 gb.setTitle(row.getString("title"));
                 gb.setContent(row.getString("content"));
-                gb.setPostDate(row.getString("postDate"));
+
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
+                String date = (String) formatter.format(new Timestamp(Long.parseLong(row.getString("postDate"))));
+                gb.setPostDate(date);
 
                 // ArrayList에 add
                 gb_list.add(gb);
