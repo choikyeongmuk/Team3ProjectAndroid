@@ -122,6 +122,6 @@
             android:paddingLeft="10dp"
             android:id="@+id/bbs_postdate"/>
 
-</LinearLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

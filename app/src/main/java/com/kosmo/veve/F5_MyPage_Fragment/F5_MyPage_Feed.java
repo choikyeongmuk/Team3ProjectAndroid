@@ -1,7 +1,16 @@
-package com.kosmo.veve;
+package com.kosmo.veve.F5_MyPage_Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.kosmo.veve.F1_RecyclerViewAdapter;
+import com.kosmo.veve.GallaryBoard;
+import com.kosmo.veve.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -33,7 +39,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class F1_Home extends Fragment implements Runnable {
+public class F5_MyPage_Feed extends Fragment implements Runnable{
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_f5__my_page__feed,null,false);
+    }
 
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
@@ -57,15 +69,6 @@ public class F1_Home extends Fragment implements Runnable {
     int check=0;
 
     private View view;
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        view = inflater.inflate(R.layout.fragment_home,container,false);
-
-        return view;
-    }
 
     @Override
     public void onStart() {
@@ -192,13 +195,15 @@ public class F1_Home extends Fragment implements Runnable {
 
     public void run() {
         try {
-            JSONObject JsonList = new JSONObject();
+            SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+            String userID = preferences.getString("userId",null);
 
+            JSONObject JsonList = new JSONObject();
             // http client 객체
             HttpClient http = new DefaultHttpClient();
 
             //주소설정
-            HttpPost httpPost = new HttpPost("http://192.168.219.184:8080/veve/Gallary/AndroidList");
+            HttpPost httpPost = new HttpPost("http://192.168.219.184:8080/veve/Gallary/MyList");
 
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
             StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);

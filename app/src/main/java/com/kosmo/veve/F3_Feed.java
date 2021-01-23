@@ -154,7 +154,7 @@ public class F3_Feed extends Fragment {
                     //https://square.github.io/okhttp/
                     //1.그레이들에 okhttp3라이브러리 추가
                     //서버로 전송하기
-                    sendImageToServer(file);
+                    //sendImageToServer(file);
 
                 }
                 catch(Exception e){e.printStackTrace();}

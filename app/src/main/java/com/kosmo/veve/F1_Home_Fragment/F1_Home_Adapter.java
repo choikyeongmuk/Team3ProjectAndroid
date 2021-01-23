@@ -1,4 +1,4 @@
-package com.kosmo.veve;
+package com.kosmo.veve.F1_Home_Fragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,7 +20,10 @@ public class F1_Home_Adapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position);
+        switch(position){
+            case 0:return new F1_Home_Gallery();
+            default:return new F1_Home_Recipe();
+        }
     }
     //page의 개수를 반환
     @Override

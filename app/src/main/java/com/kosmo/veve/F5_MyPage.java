@@ -22,11 +22,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Adapter;
+import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Feed;
+import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Nutrient;
+import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Scrap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,34 +43,94 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Vector;
 
 
 public class F5_MyPage extends Fragment {
 
-    private String userId;
-    private String password;
-
     private View view;
-    private Button btn_profile_edit,btn_bookmark;
-    private ImageView profile_img;
+    private ImageView user_profile_img;
+    private TextView posts,follower_count,following_count,fullname,bio;
+    private Button edit_profile;
 
-    String imgUrl = "http://192.168.219.184:8080/veve/upload/";
-    Bitmap bitmap;
-    back task;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private List<Fragment> fragments = new Vector<>();
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_page,container,false);
 
-        btn_profile_edit = view.findViewById(R.id.btn_edit_profile);
-        btn_bookmark = view.findViewById(R.id.btn_bookmark);
+        posts = view.findViewById(R.id.posts);
+        follower_count = view.findViewById(R.id.follower_count);
+        following_count = view.findViewById(R.id.following_count);
+        fullname = view.findViewById(R.id.user_id);
+        bio = view.findViewById(R.id.bio);
+        edit_profile = view.findViewById(R.id.edit_profile);
 
-        profile_img = view.findViewById(R.id.profile_img);
+        user_profile_img = view.findViewById(R.id.user_profile_img);
 
-        task = new back();
-        task.execute(imgUrl+"test12.jpg");
-        btn_profile_edit.setOnClickListener(listener);
+        String userId;
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId",null);
+        fullname.setText(userId);
+
+        posts.setText("5");
+        follower_count.setText("5");
+        following_count.setText("5");
+        bio.setText("hello");
+
+        edit_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String btn = edit_profile.getText().toString();
+
+                if(btn.equals("Edit Profile")){
+
+                }
+            }
+        });
+
+        /*tabLayout = view.findViewById(R.id.tabLayout);
+        //viewPager = view.findViewById(R.id.viewPager);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
+
+        F5_MyPage_Feed tabContent1 = new F5_MyPage_Feed();
+        fragments.add(tabContent1);
+        F5_MyPage_Scrap tabContent2 = new F5_MyPage_Scrap();
+        fragments.add(tabContent2);
+        F5_MyPage_Nutrient tabContent3 = new F5_MyPage_Nutrient();
+        fragments.add(tabContent3);
+
+        F5_MyPage_Adapter myPageAdapter = new F5_MyPage_Adapter(getActivity().getSupportFragmentManager(),fragments);
+        viewPager.setAdapter(myPageAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+*/
+        //task = new back();
+        //task.execute(imgUrl+"test12.jpg");
+        //btn_profile_edit.setOnClickListener(listener);
 
         return view;
     }
@@ -70,21 +138,20 @@ public class F5_MyPage extends Fragment {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(v.getId() == R.id.btn_edit_profile){
+            /*if(v.getId() == R.id.btn_edit_profile){
                 Intent intent = new Intent(getActivity(),MyPage_Edit_Profile.class);
                 startActivity(intent);
-            }
-            else if(v.getId() == R.id.btn_bookmark){
-                //Intent intent = new Intent(getActivity(),)
-            }
+            }*/
         }
     };
 
     private class back extends AsyncTask<String, Integer,Bitmap> {
+        Bitmap bitmap ;
 
         @Override
         protected Bitmap doInBackground(String... urls) {
             try{
+
                 URL myFileUrl = new URL("http://192.168.219.184:8080/veve/upload/test12.jpg");
                 HttpURLConnection conn = (HttpURLConnection)myFileUrl.openConnection();
                 conn.setDoInput(true);
@@ -92,7 +159,10 @@ public class F5_MyPage extends Fragment {
 
                 InputStream is = conn.getInputStream();
 
-                bitmap = BitmapFactory.decodeStream(is);
+                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                posts.setText("가져온 값 셋팅");
+                follower_count.setText("가져온 값 셋팅");
+                following_count.setText("가져온 값 셋팅");
 
 
             }catch(IOException e) {
@@ -102,7 +172,7 @@ public class F5_MyPage extends Fragment {
         }
 
         protected void onPostExecute(Bitmap img){
-            profile_img.setImageBitmap(bitmap);
+            user_profile_img.setImageBitmap(bitmap);
         }
 
     }

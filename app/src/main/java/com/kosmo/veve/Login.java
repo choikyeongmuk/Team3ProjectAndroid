@@ -187,7 +187,7 @@ public class Login extends AppCompatActivity {
                                     //서버로부터 응답받는 경우
                                     @Override
                                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                        Log.d("com.kosmo.veve", response.body().string());
+                                        //Log.d("com.kosmo.veve", response.body().string());
                                     }
                                 });
                             }catch (Exception e){
@@ -309,7 +309,7 @@ public class Login extends AppCompatActivity {
 
             //서버로부터 받은 데이타(JSON형식) 파싱
             //회원이 아닌 경우 빈 문자열
-            Log.i("com.kosmo.kosmoapp","result:"+result);
+            //Log.i("com.kosmo.kosmoapp","result:"+result);
             if(result !=null && result.length()!=0) {//회원인 경우
                 try {
 
@@ -322,10 +322,9 @@ public class Login extends AppCompatActivity {
                     //아이디 비번저장
                     SharedPreferences preferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
                     SharedPreferences.Editor editor =preferences.edit();
-                    editor.putString("userID",json.getString("userID"));
+                    editor.putString("userId",edtId.getText().toString());
                     editor.putString("password",json.getString("password"));
                     editor.commit();
-
 
                 }
                 catch(Exception e){e.printStackTrace();}
