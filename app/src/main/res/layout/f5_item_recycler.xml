@@ -1,40 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-    <androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         app:cardUseCompatPadding="true"
         app:cardElevation="8dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:paddingTop="-5dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <LinearLayout
-        android:layout_height="150dp"
         android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/logo"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/logo"
-            />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/logo"
-            />
+            android:id="@+id/my_file"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_book" />
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

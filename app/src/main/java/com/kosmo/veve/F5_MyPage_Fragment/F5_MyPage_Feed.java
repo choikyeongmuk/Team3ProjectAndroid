@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,37 +20,46 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.kosmo.veve.F1_RecyclerViewAdapter;
+import com.kosmo.veve.F5_RecyclerViewAdapter;
 import com.kosmo.veve.GallaryBoard;
 import com.kosmo.veve.R;
+import com.kosmo.veve.http.NetworkTask;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 public class F5_MyPage_Feed extends Fragment implements Runnable{
 
+    private View view;
+    private String userId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_f5__my_page__feed,null,false);
+
+        view = inflater.inflate(R.layout.fragment_f5__my_page__feed,container,false);
+
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId",null);
+
+        return view;
     }
 
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
-    F1_RecyclerViewAdapter recyclerViewAdapter;
+    F5_RecyclerViewAdapter recyclerViewAdapter;
 
     ImageView user_file;
     Bitmap bitmap;
@@ -59,34 +69,24 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
     ArrayList<GallaryBoard> gb_all_list = new ArrayList<>();
     ArrayList<GallaryBoard> gb_list = new ArrayList<>();
 
-    private List<String> userID = new ArrayList<>();
-    private List<String> gallary_no = new ArrayList<>();
-    private List<String> f_name = new ArrayList<>();
-    private List<String> title = new ArrayList<>();
-    private List<String> content = new ArrayList<>();
-    private List<String> postdate = new ArrayList<>();
-
     int check=0;
-
-    private View view;
 
     @Override
     public void onStart() {
         super.onStart();
-        if(check == 0){
 
+        if(check == 0){
             Thread thread = new Thread(this);
             thread.start();
 
-            recyclerView = getView().findViewById(R.id.recyclerview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView = getView().findViewById(R.id.recycler_view);
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
             initAdapter();
             check++;
         }else{
-            user_file = getView().findViewById(R.id.bbs_file);
-
-            recyclerView = getView().findViewById(R.id.recyclerview);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            user_file = getView().findViewById(R.id.my_file);
+            recyclerView = getView().findViewById(R.id.recycler_view);
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
 
             initAdapter();
         }
@@ -134,7 +134,7 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
 
 
     private void initAdapter() {
-        recyclerViewAdapter = new F1_RecyclerViewAdapter(gb_list);
+        recyclerViewAdapter = new F5_RecyclerViewAdapter(gb_list);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 
@@ -167,7 +167,7 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
 
     }
 
-    private void getData() {
+    /*private void getData() {
         // 임의의 데이터입니다.
         for(int i=0; i<gb_list.size(); i++){
             gallary_no.add(gb_list.get(i).getGallary_no());
@@ -191,19 +191,37 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
         }
 
 
-    }
+    }*/
 
     public void run() {
         try {
-            SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-            String userID = preferences.getString("userId",null);
+            // NameValuePair : 변수명과 값을 함께 저장하는 객체로 제공되는 객체이다.
+            ArrayList<NameValuePair> postData = new ArrayList<>();
+            // post 방식으로 전달할 값들을 postData 객체에 집어 넣는다.
+            postData.add(new BasicNameValuePair("userID",userId));
+            //postData.add(new BasicNameValuePair("pw","패스워드"));
+            // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다.
+            UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData,"utf-8");
+            HttpClient http = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(NetworkTask.MYPAGELIST);
+            // post 방식으로 전달할 데이터 설정
+            httpPost.setEntity(request);
+            // post 방식으로 전송, 응답결과는 response로 넘어옴
+            HttpResponse response = http.execute(httpPost);
+            // response text를 스트링으로 변환
+            String body = EntityUtils.toString(response.getEntity());
+            // 스트링을 json으로 변환한다.
+            JSONObject obj = new JSONObject(body);
+
+            // 스프링 컨트롤러에서 리턴해줄 때 저장했던 값을 꺼냄
+            //String message = obj.getString("message");
 
             JSONObject JsonList = new JSONObject();
             // http client 객체
-            HttpClient http = new DefaultHttpClient();
+            //HttpClient http = new DefaultHttpClient();
 
             //주소설정
-            HttpPost httpPost = new HttpPost("http://192.168.219.184:8080/veve/Gallary/MyList");
+            //HttpPost httpPost = new HttpPost("http://192.168.219.184:8080/veve/Gallary/MyList");
 
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
             StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);
@@ -214,11 +232,11 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
             httpPost.setEntity(params);
 
             //서버에서 중복된 아이디 찾기, excute는 한번만 하자
-            HttpResponse response = http.execute(httpPost);
+            //HttpResponse response = http.execute(httpPost);
 
-            String body = EntityUtils.toString(response.getEntity());
+            //String body = EntityUtils.toString(response.getEntity());
 
-            JSONObject obj = new JSONObject(body);
+            //JSONObject obj = new JSONObject(body);
 
             JSONArray jArray = (JSONArray) obj.get("sendData");
 
@@ -226,18 +244,15 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
                 GallaryBoard gb = new GallaryBoard();
-                gb.setUserID(row.getString("userId"));
                 gb.setF_name(row.getString("f_name"));
-                gb.setTitle(row.getString("title"));
-                gb.setContent(row.getString("content"));
-
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
-                String date = (String) formatter.format(new Timestamp(Long.parseLong(row.getString("postDate"))));
-                gb.setPostDate(date);
-
-                // ArrayList에 add
                 gb_list.add(gb);
+                Log.d("나와",(row.getString("f_name")));
             }
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("postInfo",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor =preferences.edit();
+            editor.putString("postcount", String.valueOf(gb_list.size()));
+            editor.commit();
 
         }catch (Exception e){
             e.printStackTrace();

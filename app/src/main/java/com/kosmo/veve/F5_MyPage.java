@@ -1,63 +1,51 @@
 package com.kosmo.veve;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.tabs.TabLayout;
-import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Adapter;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Feed;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Nutrient;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Scrap;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Vector;
 
 
 public class F5_MyPage extends Fragment {
 
+    FragmentManager fm;
+    FragmentTransaction tran;
+
+    F5_MyPage_Feed f5_myPage_feed;
+    F5_MyPage_Scrap f5_myPage_scrap;
+    F5_MyPage_Nutrient f5_myPage_nutrient;
+
     private View view;
-    private ImageView user_profile_img;
+    private ImageView user_profile_img,my_feed,my_scrap,my_nutrient;
     private TextView posts,follower_count,following_count,fullname,bio;
     private Button edit_profile;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     private List<Fragment> fragments = new Vector<>();
-
 
     @Nullable
     @Override
@@ -73,12 +61,13 @@ public class F5_MyPage extends Fragment {
 
         user_profile_img = view.findViewById(R.id.user_profile_img);
 
-        String userId;
         SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-        userId = preferences.getString("userId",null);
+        String userId = preferences.getString("userId",null);
         fullname.setText(userId);
 
-        posts.setText("5");
+        SharedPreferences preferences2 = view.getContext().getSharedPreferences("postInfo", Context.MODE_PRIVATE);
+        String postcount = preferences2.getString("postcount",null);
+        posts.setText(postcount);
         follower_count.setText("5");
         following_count.setText("5");
         bio.setText("hello");
@@ -94,40 +83,20 @@ public class F5_MyPage extends Fragment {
             }
         });
 
-        /*tabLayout = view.findViewById(R.id.tabLayout);
-        //viewPager = view.findViewById(R.id.viewPager);
+        my_feed = view.findViewById(R.id.my_feed);
+        my_scrap = view.findViewById(R.id.my_scrap);
+        my_nutrient = view.findViewById(R.id.my_nutrient);
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
+        my_feed.setOnClickListener(listener);
+        my_scrap.setOnClickListener(listener);
+        my_nutrient.setOnClickListener(listener);
 
-        F5_MyPage_Feed tabContent1 = new F5_MyPage_Feed();
-        fragments.add(tabContent1);
-        F5_MyPage_Scrap tabContent2 = new F5_MyPage_Scrap();
-        fragments.add(tabContent2);
-        F5_MyPage_Nutrient tabContent3 = new F5_MyPage_Nutrient();
-        fragments.add(tabContent3);
+        f5_myPage_feed = new F5_MyPage_Feed();
+        f5_myPage_scrap = new F5_MyPage_Scrap();
+        f5_myPage_nutrient = new F5_MyPage_Nutrient();
 
-        F5_MyPage_Adapter myPageAdapter = new F5_MyPage_Adapter(getActivity().getSupportFragmentManager(),fragments);
-        viewPager.setAdapter(myPageAdapter);
+        setFrag(0);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-*/
         //task = new back();
         //task.execute(imgUrl+"test12.jpg");
         //btn_profile_edit.setOnClickListener(listener);
@@ -138,12 +107,38 @@ public class F5_MyPage extends Fragment {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            /*if(v.getId() == R.id.btn_edit_profile){
-                Intent intent = new Intent(getActivity(),MyPage_Edit_Profile.class);
-                startActivity(intent);
-            }*/
+            switch (v.getId()){
+                case R.id.my_feed:
+                    setFrag(0);
+                    break;
+                case R.id.my_scrap:
+                    setFrag(1);
+                    break;
+                case R.id.my_nutrient:
+                    setFrag(2);
+                    break;
+            }
         }
     };
+
+    public void setFrag(int n){    //프래그먼트를 교체하는 작업을 하는 메소드를 만들었습니다
+        fm = getFragmentManager();
+        tran = fm.beginTransaction();
+        switch (n){
+            case 0:
+                tran.replace(R.id.mypage_view, f5_myPage_feed);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.commit();
+                break;
+            case 1:
+                tran.replace(R.id.mypage_view, f5_myPage_scrap);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.commit();
+                break;
+            case 2:
+                tran.replace(R.id.mypage_view, f5_myPage_nutrient);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.commit();
+                break;
+        }
+    }
 
     private class back extends AsyncTask<String, Integer,Bitmap> {
         Bitmap bitmap ;

@@ -14,9 +14,13 @@ import com.kosmo.veve.R;
 
 public class F5_MyPage_Nutrient extends Fragment {
 
+    private View view;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_f5__my_page__scrap,null,false);
+        view = inflater.inflate(R.layout.fragment_f5__my_page__nutrient,null,false);
+        return view;
     }
+
 }

@@ -22,9 +22,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    TextView userID,title,postdate,user_content;
     ImageView userFile;
-
 
     public List<GallaryBoard> gbList;
 
@@ -63,8 +61,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-
-        return gbList == null ? 0 : gbList.size() ;
+        return gbList == null ? 0 : gbList.size();
 
     }
 
@@ -79,7 +76,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            userFile = itemView.findViewById(R.id.bbs_file);
+            userFile = itemView.findViewById(R.id.my_file);
 
         }
     }
@@ -100,7 +97,6 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public void populateItemRows(ItemViewHolder viewHolder, int position) {
-
 
         GallaryBoard item = gbList.get(position);
         new DownloadFilesTask(item.getF_name(),userFile).execute();
@@ -152,8 +148,4 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             imageView.invalidate();
         }
     }
-
-
-
-
 }

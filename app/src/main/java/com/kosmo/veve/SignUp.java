@@ -160,8 +160,9 @@ public class SignUp extends AppCompatActivity {
         btn_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
                 startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
@@ -277,21 +278,44 @@ public class SignUp extends AppCompatActivity {
                 Uri selectedImageUri=data.getData();
                 //선택된 이미지의 Uri로 이미지뷰에 표시
                 userImage.setImageURI(selectedImageUri);
+                File file=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                //Log.d("",file.toString());
+                file.mkdirs();
+                photoImagePath=file.getAbsolutePath()+File.separator+edtId.getText().toString()+".jpg";
 
+                file = new File(photoImagePath);
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                /*String[] proj = { MediaStore.Images.Media.DATA };
-                Cursor cursor = getContentResolver().query(selectedImageUri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                String imgPath = "/storage/emulated/0/Pictures/";
-                String imgName = edtId.getText().toString()+".jpg";
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                    BufferedOutputStream bos = null;
+                    try {
+                        bos = new BufferedOutputStream(
+                                new FileOutputStream(file));
 
-                File file = new File(imgPath+imgName);
-                Log.d("imgpath",imgPath);
+                        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);//이미지가 용량이 클 경우
+                        //OutOfMemoryException 발생할수 있음.그래서 압축
+                        //사진을 앨범에 보이도록 갤러리앱에 방송을 보내기
+                        this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                        bos.flush();
+                        bos.close();
+                        //https://square.github.io/okhttp/
+                        //1.그레이들에 okhttp3라이브러리 추가
+                        //서버로 전송하기
+                        sendImageToServer(file);
 
-                sendImageToServer(file);*/
-
-
+                    }
+                    catch(Exception e){e.printStackTrace();}
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }///////////////

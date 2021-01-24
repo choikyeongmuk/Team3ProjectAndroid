@@ -323,7 +323,6 @@ public class Login extends AppCompatActivity {
                     SharedPreferences preferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
                     SharedPreferences.Editor editor =preferences.edit();
                     editor.putString("userId",edtId.getText().toString());
-                    editor.putString("password",json.getString("password"));
                     editor.commit();
 
                 }

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class F3_Feed extends Fragment {
     private EditText edt_title,edt_content;
 
     private View view;
+    private String userId;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed,container,false);
@@ -99,6 +101,9 @@ public class F3_Feed extends Fragment {
                 sendImageToServer(file);
             }
         });
+
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId",null);
 
         return view;
     }
@@ -174,7 +179,7 @@ public class F3_Feed extends Fragment {
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     //파라미터명은 picture
-                    .addFormDataPart("userID", "test12")
+                    .addFormDataPart("userID", userId)
                     .addFormDataPart("title", edt_title.getText().toString())
                     .addFormDataPart("content", edt_content.getText().toString())
                     //.addFormDataPart("postdate",postDate)
