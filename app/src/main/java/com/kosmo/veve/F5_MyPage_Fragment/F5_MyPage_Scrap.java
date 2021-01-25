@@ -21,9 +21,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kosmo.veve.F5_RecyclerViewAdapter;
-import com.kosmo.veve.GallaryBoard;
+import com.kosmo.veve.dto.GallaryBoard;
 import com.kosmo.veve.R;
-import com.kosmo.veve.http.NetworkTask;
+import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -203,7 +203,7 @@ public class F5_MyPage_Scrap extends Fragment implements Runnable{
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다.
             UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData,"utf-8");
             HttpClient http = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(NetworkTask.MYPAGESCRAPLIST);
+            HttpPost httpPost = new HttpPost(UrlCollection.MYPAGESCRAPLIST);
             // post 방식으로 전달할 데이터 설정
             httpPost.setEntity(request);
             // post 방식으로 전송, 응답결과는 response로 넘어옴
@@ -218,11 +218,6 @@ public class F5_MyPage_Scrap extends Fragment implements Runnable{
             //String message = obj.getString("message");
 
             JSONObject JsonList = new JSONObject();
-            // http client 객체
-            //HttpClient http = new DefaultHttpClient();
-
-            //주소설정
-            //HttpPost httpPost = new HttpPost("http://192.168.219.184:8080/veve/Gallary/MyList");
 
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
             StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);
@@ -231,14 +226,6 @@ public class F5_MyPage_Scrap extends Fragment implements Runnable{
 
             // post 방식으로 전달할 데이터 설정
             httpPost.setEntity(params);
-
-            //서버에서 중복된 아이디 찾기, excute는 한번만 하자
-            //HttpResponse response = http.execute(httpPost);
-
-            //String body = EntityUtils.toString(response.getEntity());
-
-            //JSONObject obj = new JSONObject(body);
-
             JSONArray jArray = (JSONArray) obj.get("sendData");
 
             for (int i = 0; i < jArray.length(); i++) {

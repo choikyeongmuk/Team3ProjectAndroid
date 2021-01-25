@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kosmo.veve.dto.GallaryBoard;
+
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;

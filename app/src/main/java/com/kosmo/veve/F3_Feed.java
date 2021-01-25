@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.kosmo.veve.http.NetworkTask;
+import com.kosmo.veve.http.UrlCollection;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -187,7 +187,7 @@ public class F3_Feed extends Fragment {
                     .build();
             //요청 객체 생성
             Request request = new Request.Builder()
-                    .url(NetworkTask.GALLERY_POST)
+                    .url(UrlCollection.GALLERY_POST)
                     .post(requestBody)
                     .build();
             OkHttpClient client = new OkHttpClient();

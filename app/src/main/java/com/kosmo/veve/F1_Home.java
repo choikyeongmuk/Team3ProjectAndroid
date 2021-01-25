@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.kosmo.veve.http.NetworkTask;
+import com.kosmo.veve.dto.GallaryBoard;
+import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -200,7 +200,7 @@ public class F1_Home extends Fragment implements Runnable {
             HttpClient http = new DefaultHttpClient();
 
             //주소설정
-            HttpPost httpPost = new HttpPost(NetworkTask.ANDROIDLIST);
+            HttpPost httpPost = new HttpPost(UrlCollection.ANDROIDLIST);
 
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
             StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);

@@ -32,7 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.kosmo.veve.http.NetworkTask;
+import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -387,7 +387,7 @@ public class SignUp extends AppCompatActivity {
                         .build();
                 //요청 객체 생성
                 Request request = new Request.Builder()
-                        .url(NetworkTask.SIGNUP)
+                        .url(UrlCollection.SIGNUP)
                         .post(requestBody)
                         .build();
                 OkHttpClient client = new OkHttpClient();

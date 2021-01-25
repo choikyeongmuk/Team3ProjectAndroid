@@ -29,7 +29,7 @@ import com.kakao.usermgmt.response.model.Profile;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.OptionalBoolean;
 import com.kakao.util.exception.KakaoException;
-import com.kosmo.veve.http.NetworkTask;
+import com.kosmo.veve.http.UrlCollection;
 
 import org.json.JSONObject;
 
@@ -172,7 +172,7 @@ public class Login extends AppCompatActivity {
                                         .build();
                                 //요청 객체 생성
                                 Request request = new Request.Builder()
-                                        .url(NetworkTask.SIGNUPKAKAO)
+                                        .url(UrlCollection.SIGNUPKAKAO)
                                         .post(requestBody)
                                         .build();
                                 OkHttpClient client = new OkHttpClient();
