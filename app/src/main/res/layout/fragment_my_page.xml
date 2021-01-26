@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:id="@+id/myPageMain"
     tools:context=".F5_MyPage">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -204,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:id="@+id/my_nutrient"
-                        android:src="@drawable/no_scrap"
+                        android:src="@drawable/ic_nutrient"
                         style="?android:attr/buttonBarButtonStyle"/>
                 </LinearLayout>
 

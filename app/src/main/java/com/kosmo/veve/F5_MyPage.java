@@ -47,12 +47,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -201,20 +198,20 @@ public class F5_MyPage extends Fragment implements Runnable{
         builder.show();
     }
 
-    public void setFrag(int n){    //프래그먼트를 교체하는 작업을 하는 메소드를 만들었습니다
+    public void setFrag(int n){
         fm = getFragmentManager();
         tran = fm.beginTransaction();
         switch (n){
             case 0:
-                tran.replace(R.id.mypage_view, f5_myPage_feed);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.replace(R.id.mypage_view, f5_myPage_feed);
                 tran.commit();
                 break;
             case 1:
-                tran.replace(R.id.mypage_view, f5_myPage_scrap);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.replace(R.id.mypage_view, f5_myPage_scrap);
                 tran.commit();
                 break;
             case 2:
-                tran.replace(R.id.mypage_view, f5_myPage_nutrient);  //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
+                tran.replace(R.id.mypage_view, f5_myPage_nutrient);
                 tran.commit();
                 break;
         }

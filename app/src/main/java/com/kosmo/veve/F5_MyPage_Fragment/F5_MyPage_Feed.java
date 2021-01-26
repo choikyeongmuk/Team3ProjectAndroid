@@ -1,6 +1,7 @@
 package com.kosmo.veve.F5_MyPage_Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,17 +48,6 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
 
     private View view;
     private String userId;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        view = inflater.inflate(R.layout.fragment_f5__my_page__feed,container,false);
-
-        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-        userId = preferences.getString("userId",null);
-
-        return view;
-    }
 
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
@@ -70,6 +62,22 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
     ArrayList<GallaryBoard> gb_list = new ArrayList<>();
 
     int check=0;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        view = inflater.inflate(R.layout.fragment_f5__my_page__feed,container,false);
+
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId",null);
+
+        //gb_list = new ArrayList<>();
+
+
+
+        return view;
+    }
 
     @Override
     public void onStart() {
@@ -88,9 +96,14 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
 
             initAdapter();
+
+            /*RecyclerView list_container = view.findViewById(R.id.recycler_view);
+            F5_RecyclerViewAdapter adapter = new F5_RecyclerViewAdapter(getContext(),gb_list);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());*/
         }
 
     }
+
 
 
     private void firstData() {
@@ -234,9 +247,11 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
                 GallaryBoard gb = new GallaryBoard();
+                gb.setUserID(row.getString("userID"));
+                gb.setTitle(row.getString("title"));
+                gb.setContent(row.getString("content"));
                 gb.setF_name(row.getString("f_name"));
                 gb_list.add(gb);
-                Log.d("나와",(row.getString("f_name")));
             }
 
             SharedPreferences preferences = getActivity().getSharedPreferences("postInfo",Context.MODE_PRIVATE);

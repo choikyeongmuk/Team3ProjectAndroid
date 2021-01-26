@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.kosmo.veve.http.UrlCollection;
@@ -31,6 +33,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -79,11 +82,34 @@ public class F3_Feed extends Fragment {
 
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-            }
-        });
+            public void onClick(View v) {/*
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                //builder.setTitle("팔로우");
+
+                //타이틀설정
+                builder.setMessage("팔로우");
+                builder.setPositiveButton("카메라",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                            }
+                        });
+                //내용설정
+                builder.setNegativeButton("갤러리",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which) {*/
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_PICK);
+                                startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
+                            }
+                        });
+                        //);
+                //builder.show();
+            //}
+        //});
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +190,57 @@ public class F3_Feed extends Fragment {
                 }
                 catch(Exception e){e.printStackTrace();}
                 Log.i("com.kosmo.veve",photoImagePath);
+            }
+        }else if(requestCode == GALLERY_IMAGE_ACTIVITY_REQUEST_CODE) {
+            //갤러리에 있는 이미지를 이미지뷰에 표시하기
+            if (resultCode == Activity.RESULT_OK) {
+                if (data == null) {
+                    Toast.makeText(context, "이미지를 가져올수 없어요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Uri selectedImageUri = data.getData();
+                //선택된 이미지의 Uri로 이미지뷰에 표시
+                image_added.setImageURI(selectedImageUri);
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                //Log.d("",file.toString());
+                file.mkdirs();
+                photoImagePath = file.getAbsolutePath() + File.separator + edt_title.getText().toString() + ".jpg";
+
+                file = new File(photoImagePath);
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                    BufferedOutputStream bos = null;
+                    try {
+                        bos = new BufferedOutputStream(
+                                new FileOutputStream(file));
+
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);//이미지가 용량이 클 경우
+                        //OutOfMemoryException 발생할수 있음.그래서 압축
+                        //사진을 앨범에 보이도록 갤러리앱에 방송을 보내기
+                        getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                        bos.flush();
+                        bos.close();
+                        //https://square.github.io/okhttp/
+                        //1.그레이들에 okhttp3라이브러리 추가
+                        //서버로 전송하기
+                        sendImageToServer(file);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
