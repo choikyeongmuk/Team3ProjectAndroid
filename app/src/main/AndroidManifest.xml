@@ -23,7 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veve"
         android:usesCleartextTraffic="true">
-        <activity android:name=".F5_MyPage_Fragment.Example"></activity>
+        <activity android:name=".F5_MyPage_Fragment.FollowList"/>
+        <activity android:name=".F5_MyPage_Fragment.FollowingList"/>
+        <activity android:name=".F5_MyPage_Fragment.Example" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

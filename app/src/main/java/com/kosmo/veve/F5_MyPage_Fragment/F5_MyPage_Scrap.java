@@ -232,6 +232,9 @@ public class F5_MyPage_Scrap extends Fragment implements Runnable{
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
                 GallaryBoard gb = new GallaryBoard();
+                gb.setUserID(row.getString("userID"));
+                gb.setTitle(row.getString("title"));
+                gb.setContent(row.getString("content"));
                 gb.setF_name(row.getString("f_name"));
                 gb_list.add(gb);
                 Log.d("나와",(row.getString("f_name")));

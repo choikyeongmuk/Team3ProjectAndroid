@@ -1,6 +1,5 @@
-package com.kosmo.veve;
+package com.kosmo.veve.F5_MyPage_Fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,47 +10,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kosmo.veve.F5_MyPage_Fragment.Example;
-import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Detail;
-import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Feed;
+import com.kosmo.veve.F5_MyPage;
+import com.kosmo.veve.R;
 import com.kosmo.veve.dto.GallaryBoard;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FollowList_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
     ImageView userFile;
+    TextView follow_id;
 
     FragmentManager fm;
     FragmentTransaction tran;
     Context mContext;
 
-    F5_MyPage_Detail f5_myPage_detail;
-    F5_MyPage f5_myPage;
-    Fragment fragment;
-
     public List<GallaryBoard> gbList;
 
 
-    public F5_RecyclerViewAdapter(List<GallaryBoard> gb_List ) {
+    public FollowList_RecyclerViewAdapter(List<GallaryBoard> gb_List ) {
         gbList = gb_List;
     }
 
-    public F5_RecyclerViewAdapter(Context context,List<GallaryBoard> gb_List){
+    public FollowList_RecyclerViewAdapter(Context context, List<GallaryBoard> gb_List){
         this.gbList = gb_List;
         this.mContext = context;
     }
@@ -65,7 +60,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.f5_item_recycler, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.follow_id_recycler, parent, false);
             return new ItemViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
@@ -101,33 +96,8 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            userFile = itemView.findViewById(R.id.my_file);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-
-                    Intent intent = new Intent(v.getContext(), Example.class);
-                    intent.putExtra("userID",gbList.get(position).getUserID());
-                    intent.putExtra("title",gbList.get(position).getTitle());
-                    intent.putExtra("content",gbList.get(position).getContent());
-                    intent.putExtra("postDate",gbList.get(position).getPostDate());
-                    intent.putExtra("f_name",gbList.get(position).getF_name());
-                    v.getContext().startActivity(intent);
-                    Toast.makeText(v.getContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
-                    /*F5_MyPage f5_myPage = new F5_MyPage();
-                    F5_MyPage_Feed f5_myPage_feed = new F5_MyPage_Feed();
-                    F5_MyPage_Detail f5_myPage_detail = new F5_MyPage_Detail();
-                    FragmentTransaction transaction = f5_myPage_feed.getChildFragmentManager().beginTransaction();
-                    transaction.replace(R.id.mypage_view, f5_myPage_detail).commit();*/
-
-                    //moveToDetail();
-
-                }
-            });
-
-
+            userFile = itemView.findViewById(R.id.user_profile);
+            follow_id = itemView.findViewById(R.id.follow_id);
         }
     }
 
@@ -158,6 +128,8 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void populateItemRows(ItemViewHolder viewHolder, int position) {
 
         GallaryBoard item = gbList.get(position);
+
+        follow_id.setText(item.getUserID());
         new DownloadFilesTask(item.getF_name(),userFile).execute();
     }
 

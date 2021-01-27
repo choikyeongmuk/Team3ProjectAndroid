@@ -13,6 +13,8 @@ public class UrlCollection{
     public static String ANDROIDLIST = SERVER_URL + "/gallary/androidList";
 
     public static String MYPAGE = SERVER_URL +"/mypage";
+    public static String FOLLOWLIST = SERVER_URL +"/mypage/followList";
+    public static String FOLLOWINGLIST = SERVER_URL +"/mypage/followingList";
     public static String MYPAGELIST = SERVER_URL + "/mypage/list";
     public static String MYPAGESCRAPLIST = SERVER_URL +"/mypage/scrapList";
 

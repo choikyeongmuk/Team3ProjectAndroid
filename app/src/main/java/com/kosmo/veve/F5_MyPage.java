@@ -2,6 +2,7 @@ package com.kosmo.veve;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,9 +26,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.kakao.util.helper.log.Tag;
+import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Detail;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Feed;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Nutrient;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Scrap;
+import com.kosmo.veve.F5_MyPage_Fragment.FollowList;
+import com.kosmo.veve.F5_MyPage_Fragment.FollowingList;
 import com.kosmo.veve.dto.GallaryBoard;
 import com.kosmo.veve.dto.MyPage;
 import com.kosmo.veve.http.UrlCollection;
@@ -49,6 +53,8 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -62,6 +68,7 @@ public class F5_MyPage extends Fragment implements Runnable{
     F5_MyPage_Feed f5_myPage_feed;
     F5_MyPage_Scrap f5_myPage_scrap;
     F5_MyPage_Nutrient f5_myPage_nutrient;
+    F5_MyPage_Detail f5_myPage_detail;
 
     private View view;
     private ImageView user_profile_img,my_feed,my_scrap,my_nutrient;
@@ -72,7 +79,8 @@ public class F5_MyPage extends Fragment implements Runnable{
     private String userId;
 
     ArrayList<MyPage> myPages = new ArrayList<>();
-
+    ArrayList<GallaryBoard> follow_list = new ArrayList<>();
+    ArrayList<GallaryBoard> following_list = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -161,41 +169,13 @@ public class F5_MyPage extends Fragment implements Runnable{
     };
 
     public void showFollower(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("팔로우");
-
-        //타이틀설정
-        builder.setMessage("팔로우");
-        //내용설정
-        builder.setPositiveButton("닫기",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Toast.makeText(getActivity().getApplicationContext(),"읽기완료",Toast.LENGTH_LONG).show();
-                    }
-                });
-        builder.show();
+        Intent intent = new Intent(getActivity(), FollowList.class);
+        startActivity(intent);
     }
 
     public void showFollowing(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("팔로잉");
-        //타이틀설정
-        builder.setMessage("팔로잉");
-        //내용설정
-        builder.setPositiveButton("읽음",
-                new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity().getApplicationContext(),"읽기완료",Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        builder.setNegativeButton("취소",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity().getApplicationContext(),"취소완료",Toast.LENGTH_LONG).show();
-                    }
-                });
-        builder.show();
+        Intent intent = new Intent(getActivity(), FollowingList.class);
+        startActivity(intent);
     }
 
     public void setFrag(int n){
