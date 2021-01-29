@@ -1,6 +1,5 @@
 package com.kosmo.veve;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,14 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kosmo.veve.F5_MyPage_Fragment.Example;
 import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Detail;
-import com.kosmo.veve.F5_MyPage_Fragment.F5_MyPage_Feed;
 import com.kosmo.veve.dto.GallaryBoard;
 
 import java.net.URL;
@@ -108,7 +104,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
 
-                    Intent intent = new Intent(v.getContext(), Example.class);
+                    Intent intent = new Intent(v.getContext(), PostDetailActivity.class);
                     intent.putExtra("userID",gbList.get(position).getUserID());
                     intent.putExtra("title",gbList.get(position).getTitle());
                     intent.putExtra("content",gbList.get(position).getContent());

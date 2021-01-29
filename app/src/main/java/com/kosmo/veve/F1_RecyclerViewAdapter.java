@@ -1,5 +1,6 @@
 package com.kosmo.veve;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,8 +81,6 @@ public class F1_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
 
-
-
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -89,6 +89,24 @@ public class F1_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             postdate = itemView.findViewById(R.id.bbs_postdate);
             user_content = itemView.findViewById(R.id.bbs_content);
             userFile = itemView.findViewById(R.id.bbs_file);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    Intent intent = new Intent(v.getContext(), PostDetailActivity.class);
+                    intent.putExtra("gallary_no",gbList.get(position).getGallary_no());
+                    intent.putExtra("userID",gbList.get(position).getUserID());
+                    intent.putExtra("title",gbList.get(position).getTitle());
+                    intent.putExtra("content",gbList.get(position).getContent());
+                    intent.putExtra("postDate",gbList.get(position).getPostDate());
+                    intent.putExtra("f_name",gbList.get(position).getF_name());
+                    v.getContext().startActivity(intent);
+                    Toast.makeText(v.getContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
+
+                }
+            });
 
         }
     }
@@ -165,8 +183,5 @@ public class F1_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             imageView.invalidate();
         }
     }
-
-
-
 
 }

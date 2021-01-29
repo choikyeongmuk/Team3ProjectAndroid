@@ -5,11 +5,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class UrlCollection{
-    public static String SERVER_URL = "http://192.168.219.184:8080/veve";
+    //public static String SERVER_URL = "http://192.168.219.184:8080/veve";
+    public static String SERVER_URL = "http://172.20.10.4:8080/veve";
+
+    public static String LOGIN = SERVER_URL+"/member/json";
 
     public static String SIGNUP = SERVER_URL + "/member/signUp";
     public static String SIGNUPKAKAO = SERVER_URL + "/member/signUpKakao";
+
     public static String GALLERY_POST = SERVER_URL + "/gallary/post";
+    public static String GALLERY_DELETE = SERVER_URL +"/gallary/delete";
+
     public static String ANDROIDLIST = SERVER_URL + "/gallary/androidList";
 
     public static String MYPAGE = SERVER_URL +"/mypage";

@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +36,8 @@ import com.kakao.util.exception.KakaoException;
 import com.kosmo.veve.http.UrlCollection;
 
 import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +45,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import lombok.SneakyThrows;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -61,6 +68,10 @@ public class Login extends AppCompatActivity {
     private SessionCallback sessionCallback = new SessionCallback();
     Session session;
 
+    private WebView mWebView;
+    private WebSettings mWebSettings;
+
+    @SneakyThrows
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +96,19 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        /*mWebView = (WebView) findViewById(R.id.webview);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.loadUrl(UrlCollection.SERVER_URL+"/Member/Auth/Login.do");
+        String url = mWebView.getUrl();
+
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookies = cookieManager.getCookie(url);
+
+        Connection.Response re = Jsoup.connect("http://192.168.219.184:8080/veve/Member/MemberDiet.do")
+                .header("Cookie", cookies)//쿠키값 전달
+                .execute();
+*/
         initView();
     }
 
@@ -243,7 +267,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new LoginAsyncTask().execute(
-                        "http://192.168.219.184:8080/veve/member/json",
+                        UrlCollection.LOGIN,
                         edtId.getText().toString(),
                         edtPwd.getText().toString());
 
@@ -309,7 +333,6 @@ public class Login extends AppCompatActivity {
 
             //서버로부터 받은 데이타(JSON형식) 파싱
             //회원이 아닌 경우 빈 문자열
-            //Log.i("com.kosmo.kosmoapp","result:"+result);
             if(result !=null && result.length()!=0) {//회원인 경우
                 try {
 
@@ -323,6 +346,7 @@ public class Login extends AppCompatActivity {
                     SharedPreferences preferences = getSharedPreferences("loginInfo",MODE_PRIVATE);
                     SharedPreferences.Editor editor =preferences.edit();
                     editor.putString("userId",edtId.getText().toString());
+                    editor.putString("password",edtPwd.getText().toString());
                     editor.commit();
 
                 }
