@@ -74,7 +74,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         if (menuItem.getItemId() == R.id.action_menu1){
-
+                            Intent intent = new Intent(PostDetailActivity.this,PostUpdate.class);
+                            intent.putExtra("gallary_no",gallary_no);
+                            intent.putExtra("title",title);
+                            intent.putExtra("content",content);
+                            startActivity(intent);
                         }else if (menuItem.getItemId() == R.id.action_menu2){
                             new DeleteAsyncTask().execute(
                                     UrlCollection.GALLERY_DELETE,
@@ -134,44 +138,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
         }
     }///////////////LoginAsyncTask
-
-    /*private void delete(){
-        try{
-
-            //요청바디 설정
-            RequestBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    //파라미터명은 picture
-                    .addFormDataPart("gallry_no", gallary_no)
-                    .build();
-            //요청 객체 생성
-            Request request = new Request.Builder()
-                    .url(UrlCollection.GALLERY_DELETE)
-                    .post(requestBody)
-                    .build();
-            OkHttpClient client = new OkHttpClient();
-            //비동기로 요청 보내기
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    e.printStackTrace();
-                }
-
-                //서버로부터 응답받는 경우
-                @Override
-                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    Log.d("com.kosmo.veve", response.body().string());
-                    Intent intent = new Intent(Example.this, MainPage.class);
-                    startActivity(intent);
-                    //Toast.makeText(getApplicationContext(),edtId.getText().toString()+"님 회원가입이 완료되었습니다.",Toast.LENGTH_SHORT);
-                }
-            });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
-
-
 
     private void initView() {
         userId = (TextView) findViewById(R.id.user_id);

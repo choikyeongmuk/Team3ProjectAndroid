@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kosmo.veve" >
+    package="com.kosmo.veve">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Veve"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity android:name=".PostUpdate"></activity>
         <activity android:name=".F5_MyPage_Fragment.FollowList" />
         <activity android:name=".F5_MyPage_Fragment.FollowingList" />
         <activity android:name=".PostDetailActivity" />
@@ -37,7 +38,7 @@
         <activity android:name=".MyPage_Edit_Profile" />
         <activity android:name=".MainPage" />
         <activity android:name=".SignUp" />
-        <activity android:name=".Splash" >
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

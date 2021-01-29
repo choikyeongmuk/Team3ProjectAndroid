@@ -15,6 +15,7 @@ public class UrlCollection{
 
     public static String GALLERY_POST = SERVER_URL + "/gallary/post";
     public static String GALLERY_DELETE = SERVER_URL +"/gallary/delete";
+    public static String GALLERY_UPDATE = SERVER_URL +"/gallary/update";
 
     public static String ANDROIDLIST = SERVER_URL + "/gallary/androidList";
 
