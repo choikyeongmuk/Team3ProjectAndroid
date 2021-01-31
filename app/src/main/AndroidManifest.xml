@@ -23,7 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veve"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PostUpdate"></activity>
+        <activity android:name=".PostComment"></activity>
+        <activity android:name=".PostUpdate" />
         <activity android:name=".F5_MyPage_Fragment.FollowList" />
         <activity android:name=".F5_MyPage_Fragment.FollowingList" />
         <activity android:name=".PostDetailActivity" />

@@ -6,7 +6,7 @@ import android.util.Log;
 
 public class UrlCollection{
     //public static String SERVER_URL = "http://192.168.219.184:8080/veve";
-    public static String SERVER_URL = "http://172.20.10.4:8080/veve";
+    public static String SERVER_URL = "http://172.20.10.2:8080/veve";
 
     public static String LOGIN = SERVER_URL+"/member/json";
 
@@ -18,6 +18,8 @@ public class UrlCollection{
     public static String GALLERY_UPDATE = SERVER_URL +"/gallary/update";
 
     public static String ANDROIDLIST = SERVER_URL + "/gallary/androidList";
+
+    public static String COMMENTLIST = SERVER_URL +"/gallary/comment";
 
     public static String MYPAGE = SERVER_URL +"/mypage";
     public static String FOLLOWLIST = SERVER_URL +"/mypage/followList";

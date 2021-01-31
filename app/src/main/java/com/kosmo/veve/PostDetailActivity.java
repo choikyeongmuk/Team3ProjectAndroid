@@ -30,7 +30,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private TextView bbsTitle;
     private TextView bbsContent;
     private TextView bbsPostdate;
-    private ImageView btn_menu;
+    private ImageView btn_menu,btn_comment;
 
     private Intent intent;
 
@@ -92,6 +92,15 @@ public class PostDetailActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
+
+        btn_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostDetailActivity.this,PostComment.class);
+                intent.putExtra("gallary_no",gallary_no);
+                startActivity(intent);
+            }
+        });
     }
 
     private class DeleteAsyncTask extends AsyncTask<String,Void,String>{
@@ -146,6 +155,7 @@ public class PostDetailActivity extends AppCompatActivity {
         bbsContent = (TextView) findViewById(R.id.bbs_content);
         bbsPostdate = (TextView) findViewById(R.id.bbs_postdate);
         btn_menu = (ImageView) findViewById(R.id.menu);
+        btn_comment = (ImageView) findViewById(R.id.comment);
     }
 
     private static class DownloadFilesTask extends AsyncTask<String,Void, Bitmap> {
