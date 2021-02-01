@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Veve"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PostComment"></activity>
+        <activity android:name=".PostComment" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".PostUpdate" />
         <activity android:name=".F5_MyPage_Fragment.FollowList" />
         <activity android:name=".F5_MyPage_Fragment.FollowingList" />
@@ -38,7 +38,7 @@
 
         <activity android:name=".MyPage_Edit_Profile" />
         <activity android:name=".MainPage" />
-        <activity android:name=".SignUp" />
+        <activity android:name=".SignUp" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login" />
+        <activity android:name=".Login" android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Theme.AppCompat" />

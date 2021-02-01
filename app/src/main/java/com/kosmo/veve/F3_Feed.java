@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -63,6 +64,9 @@ public class F3_Feed extends Fragment {
 
     private View view;
     private String userId;
+
+    UUID uuid = UUID.randomUUID();
+    String fileName = uuid.toString();
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed,container,false);
@@ -116,7 +120,7 @@ public class F3_Feed extends Fragment {
             public void onClick(View v) {
                 File file=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 file.mkdirs();
-                photoImagePath=file.getAbsolutePath()+File.separator+edt_title.getText()+".jpg";
+                photoImagePath=file.getAbsolutePath()+File.separator+fileName+".jpg";
 
                 file = new File(photoImagePath);
                 try {
@@ -161,7 +165,7 @@ public class F3_Feed extends Fragment {
                 File file=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 //Log.d("",file.toString());
                 file.mkdirs();
-                photoImagePath=file.getAbsolutePath()+File.separator+edt_title.getText()+".jpg";
+                photoImagePath=file.getAbsolutePath()+File.separator+fileName+".jpg";
 
                 file = new File(photoImagePath);
                 try {

@@ -44,11 +44,8 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-
-
     public List<GallaryComment> gcList;
     public List<GallaryBoard> gbList;
-
 
     public CommentRecycleAdapter(List<GallaryComment> gc_list) {
         gcList = gc_list;
@@ -89,7 +86,6 @@ public class CommentRecycleAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         ImageView userFile;
 
         Button comment_btn;
-
 
 
         String sessionID;

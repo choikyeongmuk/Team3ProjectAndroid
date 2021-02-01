@@ -68,7 +68,6 @@ public class F5_MyPage extends Fragment implements Runnable{
     F5_MyPage_Feed f5_myPage_feed;
     F5_MyPage_Scrap f5_myPage_scrap;
     F5_MyPage_Nutrient f5_myPage_nutrient;
-    F5_MyPage_Detail f5_myPage_detail;
 
     private View view;
     private ImageView user_profile_img,my_feed,my_scrap,my_nutrient;
@@ -114,11 +113,8 @@ public class F5_MyPage extends Fragment implements Runnable{
         edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String btn = edit_profile.getText().toString();
-
-                if(btn.equals("Edit Profile")){
-
-                }
+                Intent intent = new Intent(getActivity(),MyPage_Edit_Profile.class);
+                startActivity(intent);
             }
         });
 

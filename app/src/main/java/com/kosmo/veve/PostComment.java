@@ -4,17 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.kosmo.veve.dto.GallaryBoard;
 import com.kosmo.veve.dto.GallaryComment;
+import com.kosmo.veve.http.RequestHttpURLConnection;
 import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
@@ -34,18 +38,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostComment extends AppCompatActivity implements Runnable{
+public class PostComment extends AppCompatActivity implements Runnable {
 
-    private ImageView btn_back,comment;
-    private TextView user_comment;
+    private ImageView btn_back, comment;
+    private EditText user_comment;
+    private Button comment_btn;
 
-    String sessionID,gallary_no;
+    String userId, gallary_no;
 
     private RecyclerView recyclerView_comment;
     private CommentRecycleAdapter comment_adapter;
 
-    public List<GallaryComment> gcList  = new ArrayList<>();;
-    //public List<GallaryBoard> gbList = new ArrayList<>();
+    public List<GallaryComment> gcList = new ArrayList<>();
+    ;
 
     private Intent intent;
 
@@ -58,7 +63,7 @@ public class PostComment extends AppCompatActivity implements Runnable{
         gallary_no = intent.getStringExtra("gallary_no");
 
         SharedPreferences preferences = getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-        sessionID = preferences.getString("userID",null);
+        userId = preferences.getString("userId",null);
 
         initView();
 
@@ -70,14 +75,6 @@ public class PostComment extends AppCompatActivity implements Runnable{
 
         initAdapter();
 
-
-
-    }
-
-    private void initView() {
-        btn_back = (ImageView) findViewById(R.id.btn_back);
-        user_comment = findViewById(R.id.user_comment);
-
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,9 +82,30 @@ public class PostComment extends AppCompatActivity implements Runnable{
             }
         });
 
+        comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /* DB 대조 */
+                ContentValues values = new ContentValues();
+                values.put("userID", userId);
+                values.put("gallary_no", gallary_no);
+                values.put("content",user_comment.getText().toString());
+
+                NetworkTask networkTask = new NetworkTask(UrlCollection.COMMENT_POST, values);
+                networkTask.execute();
+            }
+        });
     }
 
-    private void initAdapter(){
+    private void initView() {
+        btn_back = (ImageView) findViewById(R.id.btn_back);
+        user_comment = (EditText) findViewById(R.id.userComment);
+        comment_btn = findViewById(R.id.comment_btn);
+
+    }
+
+    private void initAdapter() {
         comment_adapter = new CommentRecycleAdapter(gcList);
         recyclerView_comment.setAdapter(comment_adapter);
     }
@@ -97,10 +115,10 @@ public class PostComment extends AppCompatActivity implements Runnable{
             ArrayList<NameValuePair> postData = new ArrayList<>();
             // post 방식으로 전달할 값들을 postData 객체에 집어 넣는다.
             //postData.add(new BasicNameValuePair("userID",sessionID));
-            postData.add(new BasicNameValuePair("gallary_no",gallary_no));
+            postData.add(new BasicNameValuePair("gallary_no", gallary_no));
             //postData.add(new BasicNameValuePair("pw","패스워드"));
             // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다.
-            UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData,"utf-8");
+            UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData, "utf-8");
             HttpClient http = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(UrlCollection.COMMENTLIST);
             // post 방식으로 전달할 데이터 설정
@@ -125,7 +143,6 @@ public class PostComment extends AppCompatActivity implements Runnable{
             httpPost.setEntity(params);
 
             JSONArray jArray = (JSONArray) obj.get("sendData");
-
             for (int i = 0; i < jArray.length(); i++) {
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
@@ -137,19 +154,48 @@ public class PostComment extends AppCompatActivity implements Runnable{
                 gc.setCPostdate(row.getString("postdate"));
                 gc.setF_name(row.getString("f_name"));
 
-                Log.i("갤러리넘버",row.getString("gallary_no"));
-                Log.i("아이디",row.getString("userID"));
-                Log.i("내용",row.getString("content"));
-                Log.i("날짜",row.getString("postdate"));
-                Log.i("파일이름",row.getString("f_name"));
                 // ArrayList에 add
                 //gbList.add(gb);
                 gcList.add(gc);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        String url;
+        ContentValues values;
+
+        NetworkTask(String url, ContentValues values){
+            this.url = url;
+            this.values = values;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progress bar를 보여주는 등등의 행위
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result;
+            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url, values);
+            return result; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // 통신이 완료되면 호출됩니다.
+            // 결과에 따른 UI 수정 등은 여기서 합니다.
+            //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            onBackPressed();
+        }
+    }
+
 
 }

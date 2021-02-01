@@ -1,13 +1,14 @@
 package com.kosmo.veve;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 
 import com.kosmo.veve.dto.GallaryBoard;
+import com.kosmo.veve.dto.GallaryLike;
+import com.kosmo.veve.dto.GallaryScrap;
 import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
@@ -30,10 +35,19 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class F1_Home extends Fragment implements Runnable {
 
@@ -41,155 +55,65 @@ public class F1_Home extends Fragment implements Runnable {
     RecyclerView recyclerView;
     F1_RecyclerViewAdapter recyclerViewAdapter;
 
-    ImageView user_file;
-    Bitmap bitmap;
+    ImageView userfile;
 
-    boolean isLoading = false;
-
-    ArrayList<GallaryBoard> gb_all_list = new ArrayList<>();
     ArrayList<GallaryBoard> gb_list = new ArrayList<>();
-
-    private List<String> userID = new ArrayList<>();
-    private List<String> gallary_no = new ArrayList<>();
-    private List<String> f_name = new ArrayList<>();
-    private List<String> title = new ArrayList<>();
-    private List<String> content = new ArrayList<>();
-    private List<String> postdate = new ArrayList<>();
+    ArrayList<GallaryLike> glb_list = new ArrayList<>();
+    ArrayList<GallaryScrap> gs_list = new ArrayList<>();
 
     int check=0;
 
+
     private View view;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_home,container,false);
+        view =  inflater.inflate(R.layout.fragment_home,container,false);
 
-        return view;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         if(check == 0){
+
+            userfile = view.findViewById(R.id.bbs_file);
+
 
             Thread thread = new Thread(this);
             thread.start();
 
-            recyclerView = getView().findViewById(R.id.recyclerview);
+            recyclerView = view.findViewById(R.id.recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
             initAdapter();
+
             check++;
-        }else{
-            user_file = getView().findViewById(R.id.bbs_file);
 
-            recyclerView = getView().findViewById(R.id.recyclerview);
+        }else{
+            userfile = view.findViewById(R.id.bbs_file);
+
+            recyclerView = view.findViewById(R.id.recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             initAdapter();
+
         }
 
-    }
-
-
-    private void firstData() {
-        for (int a=0; a<gb_all_list.size(); a++) {
-            gb_all_list.add(gb_all_list.get(a));
-        }
-        // 총 아이템에서 10개를 받아옴
-        for (int i=0; i<10; i++) {
-            gb_list.add(gb_list.get(i));
-        }
-    }
-
-    private void dataMore() {
-        Log.d(TAG, "dataMore: ");
-        gb_list.add(null);
-        recyclerViewAdapter.notifyItemInserted(gb_list.size() -1 );
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                gb_list.remove(gb_list.size() -1 );
-                int scrollPosition = gb_list.size();
-                recyclerViewAdapter.notifyItemRemoved(scrollPosition);
-                int currentSize = scrollPosition;
-                int nextLimit = currentSize + 10;
-
-                for (int i=currentSize; i<nextLimit; i++) {
-                    if (i == gb_all_list.size()) {
-                        return;
-                    }
-                    gb_list.add(gb_all_list.get(i));
-                }
-
-                isLoading = false;
-            }
-        }, 2000);
-
+        return view;
     }
 
 
     private void initAdapter() {
         recyclerViewAdapter = new F1_RecyclerViewAdapter(gb_list);
         recyclerView.setAdapter(recyclerViewAdapter);
-    }
-
-    // 리싸이클러뷰 이벤트시
-    private void initScrollListener() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.d(TAG, "onScrollStateChanged: ");
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d(TAG, "onScrolled: ");
-
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
-                if (!isLoading) {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == gb_list.size() -1 ) {
-                        dataMore();
-                        isLoading = true;
-                        Toast.makeText(getContext(), "스크롤감지", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-
-    }
-
-    private void getData() {
-        // 임의의 데이터입니다.
-        for(int i=0; i<gb_list.size(); i++){
-            gallary_no.add(gb_list.get(i).getGallary_no());
-            userID.add(gb_list.get(i).getUserID());
-            title.add(gb_list.get(i).getTitle());
-            content.add(gb_list.get(i).getContent());
-            postdate.add(gb_list.get(i).getPostDate());
-            gb_all_list.add(gb_list.get(i));
-        }
-
-        for (int i = 0; i < title.size(); i++) {
-            // 각 List의 값들을 data 객체에 set
-            GallaryBoard data = new GallaryBoard();
-            data.setUserID(userID.get(i));
-            data.setTitle(title.get(i));
-            data.setContent(content.get(i));
-            data.setPostDate(postdate.get(i));
-            data.setGallary_no(gallary_no.get(i));
-            // 각 값이 들어간 data를 adapter에 추가
-            recyclerViewAdapter.addItem(data);
-        }
-
-
     }
 
     public void run() {
@@ -241,5 +165,7 @@ public class F1_Home extends Fragment implements Runnable {
             e.printStackTrace();
         }
     }
+
+
 
 }

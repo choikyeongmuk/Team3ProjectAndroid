@@ -11,8 +11,8 @@ public class GallaryBoard {
     private String content;
     private String postDate;
     private String userID;
-    private String visitCount;
-    private String scrapCount;
+    private int scrapCount;
+    private int heartCount;
     private String commentCount;
     private String gallary_file_no;
     private String f_path;
