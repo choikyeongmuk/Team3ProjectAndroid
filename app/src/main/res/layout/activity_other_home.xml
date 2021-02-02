@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:id="@+id/myPageMain"
+    tools:context=".F5_MyPage">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        android:id="@+id/bar"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:id="@+id/user_id"/>
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="16dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/user_profile_img"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/posts"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="게시물" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="35dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/follower_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="팔로워" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="35dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/following_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="팔로잉" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/follow_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:layout_marginTop="8dp"
+                            android:background="#21B1F3"
+                            android:text="팔로우"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:id="@+id/mid_bar"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:id="@+id/bio"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <!--<com.google.android.material.tabs.TabLayout
+                    android:id="@+id/last_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0xxx"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1xxx"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2xxx"/>
+                </com.google.android.material.tabs.TabLayout>
+                -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-5dp"
+                    android:layout_marginRight="-5dp"
+                    android:id="@+id/last_bar"
+                    android:background="@drawable/mypage_stroke"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/my_feed"
+                        android:src="@drawable/ic_feed"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/my_scrap"
+                        android:src="@drawable/no_scrap"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/my_nutrient"
+                        android:src="@drawable/ic_nutrient"
+                        style="?android:attr/buttonBarButtonStyle"/>
+                </LinearLayout>
+
+                <!--<androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/recycler_view_scrap"/>-->
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/mypage_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar"
+        android:layout_marginTop="4dp"/>
+
+</RelativeLayout>

@@ -48,6 +48,9 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
 
     private View view;
     private String userId;
+    private String otherId;
+
+    private Intent intent;
 
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
@@ -72,9 +75,16 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
         SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
         userId = preferences.getString("userId",null);
 
+        Bundle extra = getArguments();
+        if(otherId != null && !userId.equals(otherId)) {
+            userId = extra.getString("userID");
+        }
+        //Log.d("otherid",extra.getString("userID"));
+
+        /*if(!userId.equals(otherId) && otherId !=null){
+            userId=otherId;
+        }*/
         //gb_list = new ArrayList<>();
-
-
 
         return view;
     }

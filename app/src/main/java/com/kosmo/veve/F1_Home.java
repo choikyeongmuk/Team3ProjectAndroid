@@ -112,7 +112,7 @@ public class F1_Home extends Fragment implements Runnable {
 
 
     private void initAdapter() {
-        recyclerViewAdapter = new F1_RecyclerViewAdapter(gb_list);
+        recyclerViewAdapter = new F1_RecyclerViewAdapter(gb_list,glb_list,gs_list,getContext());
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 
@@ -147,18 +147,27 @@ public class F1_Home extends Fragment implements Runnable {
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
                 GallaryBoard gb = new GallaryBoard();
+                GallaryLike glb = new GallaryLike();
+                GallaryScrap gs = new GallaryScrap();
                 gb.setGallary_no(row.getString("gallary_no"));
+                glb.setGallary_no(row.getString("gallary_no"));
+                gs.setGallary_no(row.getString("gallary_no"));
                 gb.setUserID(row.getString("userId"));
-                gb.setF_name(row.getString("f_name"));
+                glb.setUserID(row.getString("userId"));
+                gs.setUserID(row.getString("userId"));
                 gb.setTitle(row.getString("title"));
                 gb.setContent(row.getString("content"));
-
+                gb.setF_name(row.getString("f_name"));
+                gb.setHeartCount(row.getInt("visitCount"));
+                //gb.setScrapCount(row.getInt("scrapCount"));
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
                 String date = (String) formatter.format(new Timestamp(Long.parseLong(row.getString("postDate"))));
                 gb.setPostDate(date);
 
                 // ArrayList에 add
                 gb_list.add(gb);
+                glb_list.add(glb);
+                gs_list.add(gs);
             }
 
         }catch (Exception e){

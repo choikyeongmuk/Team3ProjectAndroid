@@ -86,34 +86,13 @@ public class F3_Feed extends Fragment {
 
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {/*
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                //builder.setTitle("팔로우");
-
-                //타이틀설정
-                builder.setMessage("팔로우");
-                builder.setPositiveButton("카메라",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                            }
-                        });
-                //내용설정
-                builder.setNegativeButton("갤러리",
-                        new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int which) {*/
-                                Intent intent = new Intent();
-                                intent.setType("image/*");
-                                intent.setAction(Intent.ACTION_PICK);
-                                startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
-                            }
-                        });
-                        //);
-                //builder.show();
-            //}
-        //});
+            public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_PICK);
+                    startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+            });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -46,8 +46,7 @@
         <ImageView
             android:id="@+id/bbs_file"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/ic_book" />
+            android:layout_height="300dp" />
 
         <View
             android:layout_width="match_parent"
@@ -71,7 +70,7 @@
                 android:id="@+id/comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
+                android:paddingLeft="40dp"
                 android:src="@drawable/comment"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +82,6 @@
                 android:src="@drawable/no_scrap"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
                 app:layout_constraintTop_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

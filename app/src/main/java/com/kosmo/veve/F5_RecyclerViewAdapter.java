@@ -105,6 +105,7 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     int position = getAdapterPosition();
 
                     Intent intent = new Intent(v.getContext(), PostDetailActivity.class);
+                    intent.putExtra("gallary_no",gbList.get(position).getGallary_no());
                     intent.putExtra("userID",gbList.get(position).getUserID());
                     intent.putExtra("title",gbList.get(position).getTitle());
                     intent.putExtra("content",gbList.get(position).getContent());

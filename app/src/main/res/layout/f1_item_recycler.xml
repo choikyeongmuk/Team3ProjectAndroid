@@ -43,11 +43,10 @@
             android:layout_height="1dp"
             android:background="#B1AFAF"/>
 
-        <ImageView
+        <androidx.viewpager.widget.ViewPager
             android:layout_height="300dp"
             android:layout_width="match_parent"
-            android:id="@+id/bbs_file"
-            android:src="@drawable/ic_book"/>
+            android:id="@+id/bbs_file"/>
 
         <View
             android:layout_width="match_parent"
@@ -64,7 +63,6 @@
                 android:id="@+id/_heart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/no_heart"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,20 +70,17 @@
                 android:id="@+id/_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
+                android:paddingLeft="40dp"
                 android:src="@drawable/comment"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/_scrap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="44dp"
+                android:layout_height="27dp"
                 android:paddingRight="10dp"
-                android:src="@drawable/no_scrap"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
                 app:layout_constraintTop_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
