@@ -110,6 +110,10 @@ public class PostComment extends AppCompatActivity implements Runnable {
         recyclerView_comment.setAdapter(comment_adapter);
     }
 
+    public void idCheck(){
+
+    }
+
     public void run() {
         try {
             ArrayList<NameValuePair> postData = new ArrayList<>();

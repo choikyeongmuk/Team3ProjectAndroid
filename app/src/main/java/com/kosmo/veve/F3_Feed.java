@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,17 +29,40 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.kosmo.veve.dto.GallaryBoard;
+import com.kosmo.veve.dto.GallaryComment;
+import com.kosmo.veve.dto.MyFeed;
 import com.kosmo.veve.http.UrlCollection;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import okhttp3.Call;
@@ -50,7 +75,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class F3_Feed extends Fragment {
+public class F3_Feed extends Fragment implements Runnable {
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE=1;
     private static final int GALLERY_IMAGE_ACTIVITY_REQUEST_CODE=2;
@@ -58,12 +83,14 @@ public class F3_Feed extends Fragment {
     String photoImagePath;
     private Context context;
 
-    private ImageView close, image_added;
-    private TextView post;
+    private ImageView close, image_added,user_profile;
+    private TextView post,user_ID;
     private EditText edt_title,edt_content;
 
     private View view;
     private String userId;
+
+    ArrayList<MyFeed> myFeeds = new ArrayList<>();
 
     UUID uuid = UUID.randomUUID();
     String fileName = uuid.toString();
@@ -71,11 +98,23 @@ public class F3_Feed extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_feed,container,false);
 
+
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId",null);
+
+
+        SharedPreferences preferences2 = view.getContext().getSharedPreferences("postInfo", Context.MODE_PRIVATE);
+        String f_name = preferences2.getString("f_name",null);
+
         close = view.findViewById(R.id.close);
         image_added = view.findViewById(R.id.image_added);
         post = view.findViewById(R.id.POST);
         edt_title = view.findViewById(R.id.edt_title);
         edt_content = view.findViewById(R.id.edt_content);
+        user_ID = view.findViewById(R.id.user_id);
+        user_profile = view.findViewById(R.id.user_profile);
+
+        user_ID.setText(userId);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,12 +126,12 @@ public class F3_Feed extends Fragment {
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_PICK);
-                    startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
-                }
-            });
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent,GALLERY_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,11 +150,119 @@ public class F3_Feed extends Fragment {
             }
         });
 
-        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-        userId = preferences.getString("userId",null);
-
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    public void run() {
+        try {
+            // NameValuePair : 변수명과 값을 함께 저장하는 객체로 제공되는 객체이다.
+            ArrayList<NameValuePair> postData = new ArrayList<>();
+            // post 방식으로 전달할 값들을 postData 객체에 집어 넣는다.
+            postData.add(new BasicNameValuePair("userID",userId));
+            // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다.
+            UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData,"utf-8");
+            HttpClient http = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(UrlCollection.MYFEED);
+            // post 방식으로 전달할 데이터 설정
+            httpPost.setEntity(request);
+            // post 방식으로 전송, 응답결과는 response로 넘어옴
+            HttpResponse response = http.execute(httpPost);
+            // response text를 스트링으로 변환
+            String body = EntityUtils.toString(response.getEntity());
+            // 스트링을 json으로 변환한다.
+            JSONObject obj = new JSONObject(body);
+
+            JSONObject JsonList = new JSONObject();
+            // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
+            StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);
+
+            params.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/JSON"));
+
+            // post 방식으로 전달할 데이터 설정
+            httpPost.setEntity(params);
+
+            JSONArray jArray = (JSONArray) obj.get("sendData");
+
+            for (int i = 0; i < 1; i++) {
+                // json배열.getJSONObject(인덱스)
+                JSONObject row = jArray.getJSONObject(i);
+                MyFeed myFeed = new MyFeed();
+
+
+                myFeed.setF_name(row.getString("f_name"));
+
+                myFeeds.add(myFeed);
+                Log.d("파일 이름:",(row.getString("f_name")));
+            }
+
+            SharedPreferences preferences = getActivity().getSharedPreferences("postInfo",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor =preferences.edit();
+
+            editor.putString("f_name",myFeeds.get(0).getF_name());
+            editor.commit();
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String image_url = myFeeds.get(0).getF_name();
+                    loadImageTask imageTask = new loadImageTask(image_url);
+                    imageTask.execute();
+                }
+            });
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public class loadImageTask extends AsyncTask<Bitmap, Void, Bitmap> {
+
+        private String url;
+
+        public loadImageTask(String url) {
+
+            this.url = url;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Bitmap... params) {
+
+            Bitmap imgBitmap = null;
+
+            try {
+                URL url1 = new URL(url);
+                URLConnection conn = url1.openConnection();
+                conn.connect();
+                int nSize = conn.getContentLength();
+                BufferedInputStream bis = new BufferedInputStream(conn.getInputStream(), nSize);
+                imgBitmap = BitmapFactory.decodeStream(bis);
+                bis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return imgBitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bit) {
+            super.onPostExecute(bit);
+            user_profile.setImageBitmap(bit);
+        }
+    }
+
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -228,6 +375,7 @@ public class F3_Feed extends Fragment {
         }
     }
 
+
     private void sendImageToServer(File file){
         try{
 
@@ -268,8 +416,8 @@ public class F3_Feed extends Fragment {
                 }
             });
         }catch (Exception e){
-        e.printStackTrace();
-    }
+            e.printStackTrace();
+        }
 
     }
 }

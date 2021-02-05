@@ -199,8 +199,6 @@ public class OtherHomeActivity extends AppCompatActivity implements Runnable{
             }
             return true;
         }
-
-
     }
 
     public void showFollower(){

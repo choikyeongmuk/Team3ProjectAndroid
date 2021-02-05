@@ -1,6 +1,7 @@
 package com.kosmo.veve;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -32,14 +33,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.kosmo.veve.http.RequestHttpURLConnection;
 import com.kosmo.veve.http.UrlCollection;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -60,6 +65,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -144,7 +150,10 @@ public class SignUp extends AppCompatActivity {
         btn_id_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idcheck();
+                new IdCheckAsyncTask().execute(
+                        UrlCollection.IDCHECK,
+                        edtId.getText().toString(),
+                        edtPwd.getText().toString());
             }
         });
 
@@ -320,8 +329,103 @@ public class SignUp extends AppCompatActivity {
         }
     }///////////////
 
-    private void idcheck(){
+    /*public void idCheck(){
+        try {
+            ArrayList<NameValuePair> postData = new ArrayList<>();
+            // post 방식으로 전달할 값들을 postData 객체에 집어 넣는다.
+            //postData.add(new BasicNameValuePair("userID",sessionID));
+            postData.add(new BasicNameValuePair("userID", edtId.getText().toString()));
+            //postData.add(new BasicNameValuePair("pw","패스워드"));
+            // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다.
+            UrlEncodedFormEntity request = new UrlEncodedFormEntity(postData, "utf-8");
+            HttpClient http = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(UrlCollection.IDCHECK);
+            // post 방식으로 전달할 데이터 설정
+            httpPost.setEntity(request);
+            // post 방식으로 전송, 응답결과는 response로 넘어옴
+            HttpResponse response = http.execute(httpPost);
+            // response text를 스트링으로 변환
+            String body = EntityUtils.toString(response.getEntity());
+            // 스트링을 json으로 변환한다.
+            JSONObject obj = new JSONObject(body);
 
+            // 스프링 컨트롤러에서 리턴해줄 때 저장했던 값을 꺼냄
+            //String message = obj.getString("message");
+
+            JSONObject JsonList = new JSONObject();
+            // url encoding이 필요한 값들(한글, 특수문자) : 한글은 인코딩안해주면 깨짐으로 인코딩을 한다. 고쳐봐야함
+            StringEntity params = new StringEntity(JsonList.toString(), HTTP.UTF_8);
+
+            params.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/JSON"));
+
+            // post 방식으로 전달할 데이터 설정
+            httpPost.setEntity(params);
+
+            JSONArray jArray = (JSONArray) obj.get("sendData");
+            for (int i = 0; i < jArray.length(); i++) {
+                // json배열.getJSONObject(인덱스)
+                JSONObject row = jArray.getJSONObject(i);
+
+                String chk_result = row.getString("result");
+
+                if(chk_result.equals("true")){
+                    Toast.makeText(getApplicationContext(),"사용가능한 아이디입니다!",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"중복된 아이디입니다!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+    private class IdCheckAsyncTask extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuffer buf = new StringBuffer();
+            try {
+                URL url = new URL(String.format("%s?userID=%s",params[0],params[1]));
+                HttpURLConnection conn=(HttpURLConnection)url.openConnection();
+                //서버에 요청 및 응답코드 받기
+                int responseCode=conn.getResponseCode();
+                if(responseCode ==HttpURLConnection.HTTP_OK){
+                    //연결된 커넥션에서 서버에서 보낸 데이타 읽기
+                    BufferedReader br =
+                            new BufferedReader(
+                                    new InputStreamReader(conn.getInputStream(),"UTF-8"));
+                    String line;
+                    while((line=br.readLine())!=null){
+                        buf.append(line);
+                    }
+                    br.close();
+                }
+            }
+            catch(Exception e){e.printStackTrace();}
+
+            return buf.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            if(Boolean.parseBoolean(result)) {
+                try {
+                    Toast.makeText(SignUp.this,"중복된 아이디 입니다.",Toast.LENGTH_SHORT).show();
+                }
+                catch(Exception e){e.printStackTrace();}
+
+            }
+            else{
+                Toast.makeText(SignUp.this,"사용가능한 아이디 입니다.",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

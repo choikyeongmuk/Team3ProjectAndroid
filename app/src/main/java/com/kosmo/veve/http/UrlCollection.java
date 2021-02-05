@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class UrlCollection{
-    public static String SERVER_URL = "http://192.168.0.104:8080/veve";
+    public static String SERVER_URL = "http://192.168.219.105:8080/veve";
     //public static String SERVER_URL = "http://192.168.45.139:8080/veve";
     //public static String SERVER_URL = "http://172.20.10.2:8080/veve";
 
@@ -13,6 +13,7 @@ public class UrlCollection{
     public static String UPDATE_INFO = SERVER_URL+"/member/update";
 
     public static String SIGNUP = SERVER_URL + "/member/signUp";
+    public static String IDCHECK = SERVER_URL + "/member/idcheck";
     public static String SIGNUPKAKAO = SERVER_URL + "/member/signUpKakao";
 
     public static String GALLERY_POST = SERVER_URL + "/gallary/post";
@@ -26,6 +27,8 @@ public class UrlCollection{
 
     public static String COMMENTLIST = SERVER_URL +"/gallary/comment";
     public static String COMMENT_POST = SERVER_URL +"/gallary/commentPost";
+
+    public static String MYFEED = SERVER_URL+"/myfeed";
 
     public static String MYPAGE = SERVER_URL +"/mypage";
     public static String INSERTFOLLOW = SERVER_URL + "/member/follow";

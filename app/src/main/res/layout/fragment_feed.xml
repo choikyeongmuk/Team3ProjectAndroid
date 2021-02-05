@@ -10,17 +10,20 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="#F8F8F8"
         android:id="@+id/bar">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#F8F8F8"
             android:id="@+id/toolbar">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -29,55 +32,79 @@
                     android:src="@drawable/ic_close"
                     android:id="@+id/close"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="작성"
+                <Button
                     android:id="@+id/POST"
-                    android:textSize="16sp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_centerVertical="true"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_alignParentRight="true" />
+                    android:background="#6359FF"
+                    android:text="작성"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/com_kakao_cancel_button_background"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile"
+            android:padding="10dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:id="@+id/user_id"
+            />
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:padding="8dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerInside"
-            android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/image_added"
-            />
 
         <EditText
             android:id="@+id/edt_title"
             android:layout_width="240dp"
             android:layout_height="45dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/login_edittext"
+            android:background="@drawable/editbox"
             android:layout_margin="10dp"
-            android:hint="제목을 작성해주세요"
+            android:hint=" 제목을 작성해주세요"
             android:maxLines="5" />
 
         <EditText
             android:id="@+id/edt_content"
-            android:layout_width="370dp"
+            android:layout_width="350dp"
             android:layout_height="137dp"
-            android:background="@drawable/login_edittext"
+            android:background="@drawable/editbox"
             android:gravity="top|left"
-            android:hint="내용을 입력해주세요"
+            android:hint=" 내용을 입력해주세요"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
@@ -86,6 +113,15 @@
             android:maxWidth="5.0dip"
             android:minWidth="10.0dip"
             android:scrollHorizontally="false" />
+
+        <ImageView
+            android:id="@+id/image_added"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/add_file"
+            android:scaleType="centerInside" />
+
     </LinearLayout>
 
 </LinearLayout>
