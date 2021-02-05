@@ -119,24 +119,6 @@ public class F1_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             this.comment = itemView.findViewById(R.id._comment);
             this.scrap = itemView.findViewById(R.id._scrap);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-
-                    Intent intent = new Intent(v.getContext(), PostDetailActivity.class);
-                    intent.putExtra("gallary_no",gbList.get(position).getGallary_no());
-                    intent.putExtra("userID",gbList.get(position).getUserID());
-                    intent.putExtra("title",gbList.get(position).getTitle());
-                    intent.putExtra("content",gbList.get(position).getContent());
-                    intent.putExtra("postDate",gbList.get(position).getPostDate());
-                    intent.putExtra("f_name",gbList.get(position).getF_name());
-                    v.getContext().startActivity(intent);
-                    Toast.makeText(v.getContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
-
-                }
-            });
-
         }
     }
 
@@ -166,7 +148,33 @@ public class F1_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHolder.postdate.setText(gb_list.getPostDate());
         viewHolder.user_content.setText(gb_list.getContent());
 
-        viewHolder.user_content.setText(gb_list.getContent());
+        viewHolder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostComment.class);
+                intent.putExtra("gallary_no",gbList.get(position).getGallary_no());
+                intent.putExtra("userID",gbList.get(position).getUserID());
+                intent.putExtra("title",gbList.get(position).getTitle());
+                intent.putExtra("content",gbList.get(position).getContent());
+                intent.putExtra("postDate",gbList.get(position).getPostDate());
+                intent.putExtra("f_name",gbList.get(position).getF_name());
+                v.getContext().startActivity(intent);
+            }
+        });
+
+        viewHolder.userID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PostComment.class);
+                intent.putExtra("gallary_no",gbList.get(position).getGallary_no());
+                intent.putExtra("userID",gbList.get(position).getUserID());
+                intent.putExtra("title",gbList.get(position).getTitle());
+                intent.putExtra("content",gbList.get(position).getContent());
+                intent.putExtra("postDate",gbList.get(position).getPostDate());
+                intent.putExtra("f_name",gbList.get(position).getF_name());
+                v.getContext().startActivity(intent);
+            }
+        });
         viewHolder.heart_count.setText("좋아요 " + gb_list.getHeartCount() + "개");
         if (gb_list.getHeartCount() > 0) {
             viewHolder.heart.setBackgroundResource(R.drawable.heart);

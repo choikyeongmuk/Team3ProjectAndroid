@@ -71,8 +71,8 @@ public class F2_Management extends Fragment {
         try {
             String params = "userId=" + URLEncoder.encode(userId, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
             //webView.postUrl("http://192.168.219.184:8080/veve/Member/Auth/Login.do", params.getBytes());
-            webView.postUrl("http://172.20.10.4:8080/veve/Member/Auth/Login.do", params.getBytes());
-            //webView.loadUrl("http://192.168.219.184:8080/veve/Member/MemberDiet.do");
+            webView.postUrl("http://192.168.0.104:8080/veve/Member/Auth/Login2.do", params.getBytes());
+            //webView.loadUrl("http://192.168.0.104:8080/veve/Member/MemberDiet.do");
         }
         catch(UnsupportedEncodingException e){e.printStackTrace();}
 

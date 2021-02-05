@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.kosmo.veve"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -76,4 +76,13 @@ dependencies {
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    //FCM
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging:19.0.0'
+
+    implementation 'com.google.android.gms:play-services-basement:17.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

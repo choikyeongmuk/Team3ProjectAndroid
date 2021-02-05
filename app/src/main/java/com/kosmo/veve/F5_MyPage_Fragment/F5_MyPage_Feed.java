@@ -257,6 +257,7 @@ public class F5_MyPage_Feed extends Fragment implements Runnable{
                 // json배열.getJSONObject(인덱스)
                 JSONObject row = jArray.getJSONObject(i);
                 GallaryBoard gb = new GallaryBoard();
+                gb.setGallary_no(row.getString("gallary_no"));
                 gb.setUserID(row.getString("userID"));
                 gb.setTitle(row.getString("title"));
                 gb.setContent(row.getString("content"));

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +113,6 @@ public class F5_RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     intent.putExtra("postDate",gbList.get(position).getPostDate());
                     intent.putExtra("f_name",gbList.get(position).getF_name());
                     v.getContext().startActivity(intent);
-                    Toast.makeText(v.getContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
                     /*F5_MyPage f5_myPage = new F5_MyPage();
                     F5_MyPage_Feed f5_myPage_feed = new F5_MyPage_Feed();
                     F5_MyPage_Detail f5_myPage_detail = new F5_MyPage_Detail();

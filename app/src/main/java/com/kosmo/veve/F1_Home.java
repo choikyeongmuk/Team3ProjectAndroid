@@ -1,6 +1,8 @@
 package com.kosmo.veve;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +64,7 @@ public class F1_Home extends Fragment implements Runnable {
     ArrayList<GallaryScrap> gs_list = new ArrayList<>();
 
     int check=0;
+    private String login_id;
 
 
     private View view;
@@ -73,14 +76,14 @@ public class F1_Home extends Fragment implements Runnable {
     }
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view =  inflater.inflate(R.layout.fragment_home,container,false);
 
+        SharedPreferences preferences = view.getContext().getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        login_id = preferences.getString("userId",null);
 
         if(check == 0){
 
@@ -159,7 +162,7 @@ public class F1_Home extends Fragment implements Runnable {
                 gb.setContent(row.getString("content"));
                 gb.setF_name(row.getString("f_name"));
                 gb.setHeartCount(row.getInt("visitCount"));
-                //gb.setScrapCount(row.getInt("scrapCount"));
+                gb.setScrapCount(row.getInt("scrapCount"));
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
                 String date = (String) formatter.format(new Timestamp(Long.parseLong(row.getString("postDate"))));
                 gb.setPostDate(date);

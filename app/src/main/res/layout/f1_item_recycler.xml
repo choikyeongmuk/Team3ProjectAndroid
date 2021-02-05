@@ -28,6 +28,7 @@
                 android:id="@+id/user_id"/>
 
             <ImageView
+                android:id="@+id/more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -69,9 +70,11 @@
             <ImageView
                 android:id="@+id/_comment"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="40dp"
+                android:layout_height="34dp"
+                android:layout_marginEnd="240dp"
                 android:src="@drawable/comment"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/_scrap"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,7 +94,6 @@
             android:id="@+id/heart_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="좋아요 1개"
             android:paddingLeft="10dp"
             android:textSize="16sp"
             android:textStyle="bold"

@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class UrlCollection{
-    //public static String SERVER_URL = "http://192.168.0.141:8080/veve";
-    public static String SERVER_URL = "http://192.168.45.139:8080/veve";
+    public static String SERVER_URL = "http://192.168.0.104:8080/veve";
+    //public static String SERVER_URL = "http://192.168.45.139:8080/veve";
     //public static String SERVER_URL = "http://172.20.10.2:8080/veve";
 
     public static String LOGIN = SERVER_URL+"/member/json";
